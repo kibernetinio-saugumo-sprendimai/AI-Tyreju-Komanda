@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "tyreju-komanda": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["${workspaceFolder}/src/server.mjs"]
+    }
+  }
+}

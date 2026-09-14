@@ -1,0 +1,18 @@
+{
+  "name": "tyreju-komanda-mcp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vietinis keturių tyrėjų komandos MCP serveris VS Code",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "start": "node src/server.mjs",
+    "vscode:install": "node scripts/install-vscode.mjs",
+    "test": "node --test",
+    "check": "node --check src/server.mjs && node --check src/research.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.30.0",
+    "zod": "4.6.2"
+  }
+}
