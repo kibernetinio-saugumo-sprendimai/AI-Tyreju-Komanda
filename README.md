@@ -58,3 +58,17 @@ Repositoryje pateikti keturi VS Code Custom Agents kataloge `.github/agents/`:
 Bendros taisyklės yra `.github/copilot-instructions.md`, o repositoryje dalijamas MCP serverio aprašas — `.vscode/mcp.json`. Prieš naudojant MCP įrankius įdiek priklausomybes su `npm install`; projektui reikia Node.js `>=22`. Serverį galima paleisti su `npm start` arba pasirinkti MCP serverį VS Code įrankių sąraše.
 
 Šis eksportas keičia tik repository failus. Jis neįrašo MCP į vartotojo VS Code profilį, nepublikuoja pakeitimų į GitHub ir nesukuria Git commit.
+
+## Markdown failai
+
+| Failas | Paskirtis |
+| --- | --- |
+| [README.md](README.md) | Projekto paskirtis, tyrėjų komandos darbo eiga, agentų naudojimas ir pagrindinės taisyklės. |
+| [MCP_SERVER.md](MCP_SERVER.md) | Vietinio MCP serverio diegimas, VS Code konfigūracija, įrankiai, resursai, apribojimai ir trikčių diagnostika. |
+| [UZDUOTIS.md](UZDUOTIS.md) | Tyrimo užduoties šablonas: klausimas, objektas, kontekstas, apribojimai ir baigties kriterijus. |
+| [VAIDMENYS.md](VAIDMENYS.md) | Trijų specialistų vaidmenų instrukcijos: architektūros, kodo kokybės ir technologijų tyrimai. |
+| [.github/copilot-instructions.md](.github/copilot-instructions.md) | Bendros repository Copilot instrukcijos: kalba, įrodymų taisyklės, read-only režimas ir delegavimas. |
+| [.github/agents/architecture.agent.md](.github/agents/architecture.agent.md) | Architektūros agento atsakomybės, darbo eiga ir atsakymo formatas. |
+| [.github/agents/code-quality.agent.md](.github/agents/code-quality.agent.md) | Kodo kokybės agento atsakomybės, patikros ir radinių formatas. |
+| [.github/agents/technology.agent.md](.github/agents/technology.agent.md) | Technologijų agento versijų, oficialių šaltinių ir alternatyvų vertinimo taisyklės. |
+| [.github/agents/coordinator.agent.md](.github/agents/coordinator.agent.md) | Koordinatoriaus darbo eiga, įrodymų patikra ir bendros ataskaitos formatas. |
