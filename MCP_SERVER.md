@@ -1,26 +1,26 @@
-# Vietinis MCP serveris VS Code
+# Local MCP server for VS Code
 
-Serveris `tyreju-komanda` paleidžiamas vietiniame kompiuteryje per `stdio`. VS Code valdo procesą ir ryšį; HTTP adresas, atviras prievadas ar nuolat veikianti tarnyba nereikalingi.
+The `tyreju-komanda` server runs locally over `stdio`. VS Code manages the process and connection; no HTTP endpoint, open port or long-running service is required.
 
-Viena tyrimo užklausa vykdo tris atskiras specializuotas modelio užklausas lygiagrečiai, tada ketvirtą – koordinatoriaus išvadoms. Tai šios MCP programos sukurti modelio kontekstai; jie nesijungia prie ankstesniame pokalbyje sukurtų agentų.
+Each research request runs three specialized model prompts in parallel and then a fourth coordinator prompt. These contexts are created by this MCP application and do not connect to agents from earlier conversations.
 
-## Pradžia šiame kompiuteryje
+## Start on this computer
 
-1. Atidaryk norimą projektą **Visual Studio Code**.
-2. Paspausk **Cmd+Shift+P → MCP: List Servers → tyreju-komanda → Start**. Jei VS Code parodo pasitikėjimo serveriu langą, peržiūrėk ir patvirtink jį.
-3. Atidaryk vietinį **Chat → Agent** režimą. Jei AI funkcijos dar neaktyvios, įjunk jas ir prisijunk per VS Code. Šiame kompiuteryje esanti VS Code 1.135 versija turi integruotą Copilot Chat.
-4. Per **Configure Tools** įjunk `tyreju-komanda` įrankius. Per **MCP: List Servers → tyreju-komanda → Configure Model Access** suteik serveriui prieigą prie savo turimų modelių; VS Code gali to paprašyti pirmos tyrimo užklausos metu.
-5. Pateik užduotį, pavyzdžiui:
+1. Open the target project in **Visual Studio Code**.
+2. Select **Cmd+Shift+P → MCP: List Servers → tyreju-komanda → Start** and review any trust prompt.
+3. Open local **Chat → Agent** mode and sign in to VS Code AI features.
+4. In **Configure Tools**, enable `tyreju-komanda`. Use **MCP: List Servers → tyreju-komanda → Configure Model Access** to grant access to allowed models.
+5. Submit a task, for example:
 
-> Naudok tyreju-komanda MCP serverį. Perskaityk šio projekto pagrindinį modulį ir jo testus, perduok aktualius fragmentus research_team ir įvertink patikimumo problemas. Kodo nekeisk.
+> Use the tyreju-komanda MCP server. Read this project's main module and tests, send relevant fragments to research_team and assess reliability issues. Do not change code.
 
-MCP promptų meniu taip pat yra `tyrimas`, kuris padeda surinkti įrodymus ir iškviesti komandą.
+The MCP prompt menu also includes `research`, which collects evidence and invokes the team.
 
-Serveriui nereikia atskiro API rakto. Modelius, jų prieigos leidimus ir naudojimo limitus valdo VS Code. Vietinis serveris savaime nereiškia vietinio modelio: pateikta tyrimo medžiaga siunčiama tam modelio tiekėjui, kurį leidai naudoti VS Code. Konkretų sampling modelį parenka klientas iš serveriui leistinų modelių; jis gali skirtis nuo pokalbio modelio.
+The server needs no separate API key. VS Code controls model access and usage limits. A local server does not imply a local model: submitted research material is sent to the model provider you authorize in VS Code.
 
-## Diegimas ir konfigūracija
+## Installation and configuration
 
-Reikia Node.js 22 ar naujesnio ir VS Code su MCP palaikymu. Šiame kompiuteryje patikrinta Node.js 26.8.2 ir VS Code 1.135.0.
+Node.js 22 or newer and an MCP-enabled VS Code are required.
 
 ```sh
 cd /Users/safestack/tyreju-komanda
@@ -28,33 +28,29 @@ npm ci --ignore-scripts
 npm run vscode:install
 ```
 
-Diegimo komanda per oficialų VS Code `--add-mcp` įrašo serverį į vartotojo profilį. Naudojami absoliutūs Node ir serverio keliai, todėl paleidimas nepriklauso nuo VS Code terminalo PATH ar atidaryto projekto. Kitų serverių konfigūraciją sujungia VS Code. Perkėlus projektą ar pašalinus naudojamą Node vykdomąjį failą, pakartok `npm run vscode:install`.
+The install command registers the server in the user profile with VS Code's official `--add-mcp` option. It uses absolute Node and server paths. Re-run it after moving the project or removing the configured Node executable.
 
-Numatytojo macOS profilio konfigūracija:
+The default macOS profile is `~/Library/Application Support/Code/User/mcp.json`. For project-only configuration, copy [vscode-mcp.example.json](vscode-mcp.example.json) to `.vscode/mcp.json`. Do not use both profile and project configuration unless you intentionally need both.
 
-`~/Library/Application Support/Code/User/mcp.json`
+`npm start` launches the MCP protocol process and waits for client messages on standard input. Use VS Code for normal operation; stop it with **MCP: List Servers → Stop**.
 
-Jei nori konfigūraciją laikyti tik šiame projekte, [vscode-mcp.example.json](vscode-mcp.example.json) nukopijuok į `.vscode/mcp.json`. Pavyzdyje prireikus `node` pakeisk absoliučiu vykdomojo failo keliu. Vartotojo profilio ir projekto konfigūracijų kartu naudoti nereikia. Skirtingi VS Code profiliai turi atskiras konfigūracijas.
+## MCP interface
 
-Tiesioginis `npm start` paleidžia MCP protokolo procesą, kuris laukia kliento pranešimų standartinėje įvestyje. Terminale jis nerodo interneto adreso. Darbui naudok VS Code; stabdymas – **MCP: List Servers → Stop**.
-
-## MCP sąsaja
-
-| Sąsaja | Paskirtis | Modelis |
+| Interface | Purpose | Model |
 | --- | --- | --- |
-| Tool `list_researchers` | Keturi vaidmenys ir kliento sampling galimybė. | Nereikia |
-| Tool `prepare_research` | Užduočių paskirstymas pagal vaidmenis. Tai paruošimas, ne atliktas tyrimas. | Nereikia |
-| Tool `research_team` | Trijų specialistų analizė ir koordinatoriaus ataskaita. | Reikia sampling |
-| Prompt `tyrimas` | Instrukcija VS Code agentui surinkti įrodymus ir paleisti komandą. Argumentas `question`. | Vykdymui reikia |
-| Resource `team://guide` | Komandos darbo taisyklės. | Nereikia |
-| Resource `team://roles` | Tyrėjų instrukcijos. | Nereikia |
-| Resource `team://task-template` | Tyrimo užduoties šablonas. | Nereikia |
+| Tool `list_researchers` | Four roles and client sampling capability. | Not required |
+| Tool `prepare_research` | Role-based task planning; this does not perform research. | Not required |
+| Tool `research_team` | Three specialist analyses and a coordinator report. | Sampling required |
+| Prompt `research` | Instructs the VS Code agent to collect evidence and run the team. | Required for execution |
+| Resource `team://guide` | Team working rules. | Not required |
+| Resource `team://roles` | Researcher instructions. | Not required |
+| Resource `team://task-template` | Research task template. | Not required |
 
-`prepare_research` ir `research_team` naudoja bendrą įvesties formatą:
+`prepare_research` and `research_team` use this input shape:
 
 ```json
 {
-  "question": "Ar ši funkcija tinkamai apdoroja tuščią masyvą?",
+  "question": "Does this function handle an empty array correctly?",
   "evidence": [
     {
       "source": "src/average.js",
@@ -62,45 +58,43 @@ Tiesioginis `npm start` paleidžia MCP protokolo procesą, kuris laukia kliento 
       "content": "export const average = xs => xs.reduce((a, b) => a + b, 0) / xs.length;"
     }
   ],
-  "constraints": "Atsakyk lietuviškai. Kodo nekeisk."
+  "constraints": "Answer in English. Do not change code."
 }
 ```
 
-`question` privalomas. `constraints` ir `startLine` neprivalomi. Tyrimui reikia bent vieno įrodymo, planavimui jų galima nepateikti. Ribos: klausimas ir apribojimai po 4000 simbolių, iki 20 įrodymų, kiekvieno tekstas iki 60000 simbolių, bendras įrodymų tekstas iki 80000 simbolių.
+`question` is required. `constraints` and `startLine` are optional. Research requires at least one evidence item; planning may omit evidence. Limits are 4,000 characters for the question and constraints, 20 evidence items, 60,000 characters per item and 80,000 characters total.
 
-`source` yra tik citavimo žyma. Serveris neatveria nurodytų failų ar URL. VS Code agentas turi savo įrankiais perskaityti aktualų kodą, dokumentaciją ar testų rezultatus ir perduoti `content`. Modelių užklausos neturi naršymo ar failų įrankių. Jei šaltinių ar versijų nepakanka, ataskaita turi aiškiai tai pažymėti.
+`source` is a citation label only. The server does not open files or URLs. The VS Code agent must read relevant code, documentation or test results with its own tools and send the content. If sources or versions are insufficient, the report must say so.
 
-Rezultatas pateikiamas kaip tekstinis JSON ir `structuredContent`: `status`, `question`, `report`, `specialists`, `coordinator` ir `limitations`. Kai nė vienas specialistas neatsako, koordinatorius nekviečiamas, todėl `coordinator` nėra.
+The result is text JSON and `structuredContent` with `status`, `question`, `report`, `specialists`, `coordinator` and `limitations`. A coordinator is omitted when no specialist responds.
 
-- `complete`: visi keturi modelio atsakymai gauti pilnai. Tai negarantuoja, kad kiekviena modelio išvada teisinga; ją reikia vertinti pagal įrodymus.
-- `partial`: dalis užklausų nepavyko arba atsakymas sutrumpintas; grąžinami turimi rezultatai ir apribojimai. Jei sintezė nepavyksta, išsaugomos specialistų ataskaitos.
-- `failed` su `isError: true`: nėra sampling palaikymo, visi specialistai nesėkmingi arba įvyko kita tyrimą sustabdžiusi klaida.
+- `complete`: all four model responses were received in full; this does not make every conclusion correct.
+- `partial`: some requests failed or were truncated; available results and limitations are returned.
+- `failed` with `isError: true`: sampling is unavailable, all specialists failed or another blocking error occurred.
 
-Vienu metu šiame serverio procese vyksta vienas tyrimas. Kiekvienos modelio užklausos laukimo riba – 180 sekundžių. Nesėkmingos užklausos automatiškai nekartojamos; vartotojo atšaukimas perduodamas vykdomoms užklausoms. Serveris neatlieka pakeitimų projekte ir neišsaugo tyrimo turinio į failus. Tyrėjų instrukcijos ir resursai perskaitomi paleidžiant; juos pakeitus perkrauk serverį.
+Only one research request runs in this server process at a time. Each model request has a 180-second timeout. Failed requests are not automatically retried. The server does not modify projects or save research content to files.
 
-## Patikra ir trikčių diagnostika
+## Checks and troubleshooting
 
 ```sh
 npm run check
 npm test
 ```
 
-Testai naudoja tikrą MCP klientą ir atskirą serverio procesą, o modelio atsakymus imituoja vietoje. Jie nenaudoja API raktų ar mokamų modelių. Gyvas tyrimas papildomai priklauso nuo vartotojo modelio prieigos ir VS Code leidimų.
+Tests use a real MCP client and a separate server process while simulating model responses locally. They do not use API keys or paid models.
 
-- Serverio nematyti: patikrink aktyvų VS Code profilį, paleisk `npm run vscode:install` ir atverk **MCP: List Servers**.
-- Procesas nepasileidžia: per **Show Output** patikrink Node/serverio kelią; jei trūksta priklausomybių, paleisk `npm ci --ignore-scripts`.
-- Modelio užklausos atmetamos: patikrink **Configure Model Access**, AI prisijungimą ir turimo modelio naudojimo limitus.
-- Matomas `sampling_unavailable`: klientas šios galimybės nepaskelbė. Naudok VS Code vietinį Chat Agent režimą; kiti klientai ar Agent Host sesijos gali turėti kitokį palaikymą. Planavimo įrankiai ir resursai vis tiek prieinami.
-- Peržiūrėti modelio užklausas galima per serverio **Show Sampling Requests**.
+- Server missing: check the active VS Code profile, run `npm run vscode:install` and open **MCP: List Servers**.
+- Process fails: inspect **Show Output** for the Node/server path; run `npm ci --ignore-scripts` if dependencies are missing.
+- Model requests rejected: check **Configure Model Access**, AI sign-in and model limits.
+- `sampling_unavailable`: the client did not advertise sampling. Use VS Code local Chat Agent mode.
+- Inspect model requests with **Show Sampling Requests**.
 
-## Suderinamumo pagrindas
+## Compatibility basis
 
-Naudojamas oficialus `@modelcontextprotocol/sdk` 1.30.0 ir MCP 2025-11-25 protokolo suderinamumas. MCP 2026-07-28 laidoje tiesioginis sampling pažymėtas kaip keičiamas nauja eiga; ši versija sąmoningai remiasi VS Code palaikomu SDK v1 keliu. Pereinant prie SDK v2 reikia iš naujo patikrinti sampling API ir suderintą protokolą.
+The server uses `@modelcontextprotocol/sdk` 1.30.0 and MCP 2025-11-25 compatibility. Re-check the sampling API and protocol when migrating to SDK v2.
 
-Oficialūs šaltiniai, patikrinti 2026-09-12:
+Official sources checked 2026-09-12:
 
-- [VS Code MCP serverių diegimas ir valdymas](https://code.visualstudio.com/docs/agent-customization/mcp-servers)
-- [VS Code sampling ir modelio prieiga](https://code.visualstudio.com/api/extension-guides/ai/mcp#sampling)
-- [Integruotas Copilot nuo VS Code 1.116](https://code.visualstudio.com/updates/v1_116#_github-copilot-is-now-builtin)
-- [Oficialaus MCP SDK v1 galimybės](https://ts.sdk.modelcontextprotocol.io/capabilities)
-- [MCP 2026-07-28 protokolo pakeitimai](https://blog.modelcontextprotocol.io/posts/2026-07-28/)
+- [VS Code MCP servers](https://code.visualstudio.com/docs/agent-customization/mcp-servers)
+- [VS Code sampling and model access](https://code.visualstudio.com/api/extension-guides/ai/mcp#sampling)
+- [Official MCP SDK v1 capabilities](https://ts.sdk.modelcontextprotocol.io/capabilities)
