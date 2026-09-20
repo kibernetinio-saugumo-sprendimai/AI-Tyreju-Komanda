@@ -1,74 +1,45 @@
-# Technologijų ir kodo tyrėjų komanda
+# Technology and Code Research Team
 
-Keturių narių komanda technologijų ir kodo analizei: trys tyrėjai ir koordinatorius. Šiame kataloge yra darbo taisyklės, užduoties šablonas ir vietinis MCP serveris, skirtas VS Code. [MCP serverio paleidimas ir naudojimas](MCP_SERVER.md).
+A four-member team for technology and code analysis: three specialist researchers and one coordinator. This directory contains working rules, a task template and a local MCP server for VS Code. See [MCP server setup and usage](MCP_SERVER.md).
 
-## Nariai
-
-| Narys | Agento vardas šiame pokalbyje | Atsakomybė |
+| Member | Agent name | Responsibility |
 | --- | --- | --- |
-| Architektūros tyrėjas | `architekturos_tyrejas` | Sistemos struktūra, priklausomybės, duomenų srautai ir integracijos. |
-| Kodo kokybės tyrėjas | `kodo_kokybes_tyrejas` | Logikos klaidos, ribiniai atvejai ir testavimo spragos. |
-| Technologijų tyrėjas | `technologiju_tyrejas` | Oficiali dokumentacija, versijų suderinamumas ir alternatyvos. |
-| Koordinatorius ir vertintojas | Pagrindinis asistentas | Tyrimo ribos, užduočių paskirstymas, įrodymų patikra ir bendra ataskaita. |
+| Architecture researcher | `architecture_researcher` | System structure, dependencies, data flows and integrations. |
+| Code-quality researcher | `code_quality_researcher` | Logic errors, edge cases and testing gaps. |
+| Technology researcher | `technology_researcher` | Official documentation, version compatibility and alternatives. |
+| Coordinator and reviewer | Primary assistant | Scope, task assignment, evidence checks and the consolidated report. |
 
-Tyrėjų instrukcijos pateiktos [VAIDMENYS.md](VAIDMENYS.md). Pokalbyje komanda naudoja atskirus agentus. MCP serveris tuos pačius vaidmenis vykdo per tris specializuotas VS Code modelio užklausas ir ketvirtą koordinatoriaus užklausą; ankstesnio pokalbio agentų pasiekiamumas nereikalingas. MCP modelių kontekstams VS Code klientas turi perduoti jau surinktus įrodymus, nes serveris pats projekto neskaito ir interneto nenaršo.
+Detailed researcher instructions are in [ROLES.md](ROLES.md). The MCP server implements the same roles through specialized VS Code model prompts; it does not depend on agents from an earlier conversation. The VS Code client must provide collected evidence because the server does not read the project or browse the internet by itself.
 
-## Užduoties pateikimas
+## Submitting a task
 
-Pakanka čia parašyti tyrimo klausimą ir pateikti saugyklos kelią, kodo fragmentą arba technologiją. Papildomus apribojimus galima nurodyti pagal [UZDUOTIS.md](UZDUOTIS.md). Šablono pildyti neprivaloma.
+Provide the research question and a repository path, code fragment or technology. Additional constraints can be specified in [TASK.md](TASK.md). The template is optional.
 
-Pavyzdys: „Ištirk projektą `/kelias/iki/projekto`: surask svarbiausias patikimumo problemas ir įvertink naudojamų bibliotekų suderinamumą. Kodo nekeisk.“
+Example: “Investigate `/path/to/project`: find the most important reliability issues and assess library compatibility. Do not change code.”
 
-## Koordinatoriaus darbo eiga
+## Research workflow
 
-1. Perskaityk užduotį ir taikomas saugyklos instrukcijas. Patikrink prieinamus failus, versijas ir kontekstą prieš prašydamas vartotojo informacijos, kurią galima rasti savarankiškai.
-2. Apibrėžk tikslą, analizės ribas ir baigties kriterijus. Jei esminės informacijos trūksta, užduok vieną konkretų klausimą ir tęsk nuo atsakymo nepriklausantį darbą.
-3. Kiekvienam tyrėjui perduok konkrečią, apribotą užduotį, bendrą kontekstą, prieinamus šaltinius, apribojimus ir laukiamą išvadų formatą. Tyrėjai dirba lygiagrečiai, koordinatorius tikrina bendrą kontekstą. Jei sričiai nėra medžiagos, pažymėk ją kaip netaikomą ir neskirk dirbtinės užduoties.
-4. Surink išvadas, pašalink pasikartojimus ir patikrink svarbiausius teiginius pagal nurodytus įrodymus. Prieštaravimus spręsk papildoma kryptinga patikra; jei jų išspręsti nepavyksta, ataskaitoje išlaikyk neapibrėžtumą.
-5. Pateik vieną bendrą ataskaitą su radiniais, jų poveikiu, rekomenduojamais veiksmais, atliktomis patikromis ir likusiais neaiškumais.
+1. Read the task and applicable repository instructions before inspecting files.
+2. Define the objective, scope and completion criteria.
+3. Assign bounded work with context, sources, constraints and an expected output format.
+4. Consolidate findings, remove duplicates and verify important claims against evidence.
+5. Deliver one report with findings, impact, recommended actions, checks performed and remaining uncertainty.
 
-## Įrodymų ir darbo taisyklės
+## Evidence rules
 
-- Pagal nutylėjimą atliekama analizė. Kodo keitimas yra atskira vartotojo užduotis.
-- Kiekvienas reikšmingas radinys turi nurodyti konkretų failą ir eilutę arba pirminio šaltinio nuorodą. Ataskaitoje naudok paspaudžiamas nuorodas.
-- Faktus, iš šaltinių daromas išvadas ir nepatikrintas hipotezes aiškiai atskirk. Agentų sutarimas nepakeičia įrodymų.
-- Versijų suderinamumą ir kitus kintančius technologinius teiginius tikrink pagal aktualią oficialią dokumentaciją; nurodyk vertintas versijas ir patikros datą.
-- Testus ar kitas patikras rinkis tik konkrečiai išvadai patikrinti. Atsižvelk į jų šalutinį poveikį. Aiškiai nurodyk, kas vykdyta, kas tik perskaityta ir kas liko nepatikrinta.
-- Jei nėra prieigos prie kodo, dokumentacijos ar vykdymo aplinkos, nurodyk apribojimą ir tęsk prieinamą analizę; neišgalvok rezultatų.
-- Neatskleisk aptiktų paslapčių, prieigos raktų ar nesusijusių privačių duomenų.
+- Analysis is read-only by default; code changes require a separate request.
+- Every material finding must cite a file and line or a primary source.
+- Separate facts, conclusions and unverified hypotheses.
+- Check changing technology claims against current official documentation.
+- Do not disclose secrets, access keys or unrelated private data.
 
-## Bendros ataskaitos formatas
+## Repository files
 
-1. **Santrauka:** atsakymas į tyrimo klausimą ir svarbiausia rekomendacija.
-2. **Radiniai:** problema arba pastebėjimas, įrodymas, faktas ar hipotezė, poveikis ir siūlomas veiksmas. Rikiuok pagal praktinį poveikį.
-3. **Patikra:** atliktos patikros ir rezultatai; nevykdytų reikalingų patikrų priežastys.
-4. **Neaiškumai ir aprėptis:** ištirtos sritys, apribojimai ir klausimai, kuriems dar trūksta įrodymų.
-
-Tyrimas baigtas, kai atsakyta į sutartą klausimą, reikšmingi radiniai pagrįsti ir aiškiai įvardytos išvadų ribos. Jei pagrįstų problemų nerasta, taip ir parašyk.
-
-## Repo agentai
-
-Repositoryje pateikti keturi VS Code Custom Agents kataloge `.github/agents/`:
-
-- `architecture` — sistemos struktūra, priklausomybės ir integracijos.
-- `code-quality` — logikos klaidos, ribiniai atvejai ir testavimo spragos.
-- `technology` — oficiali dokumentacija, versijos ir suderinamumas.
-- `coordinator` — užduoties ribos, specialistų išvadų sujungimas ir įrodymų patikra.
-
-Bendros taisyklės yra `.github/copilot-instructions.md`, o repositoryje dalijamas MCP serverio aprašas — `.vscode/mcp.json`. Prieš naudojant MCP įrankius įdiek priklausomybes su `npm install`; projektui reikia Node.js `>=22`. Serverį galima paleisti su `npm start` arba pasirinkti MCP serverį VS Code įrankių sąraše.
-
-Šis eksportas keičia tik repository failus. Jis neįrašo MCP į vartotojo VS Code profilį, nepublikuoja pakeitimų į GitHub ir nesukuria Git commit.
-
-## Markdown failai
-
-| Failas | Paskirtis |
+| File | Purpose |
 | --- | --- |
-| [README.md](README.md) | Projekto paskirtis, tyrėjų komandos darbo eiga, agentų naudojimas ir pagrindinės taisyklės. |
-| [MCP_SERVER.md](MCP_SERVER.md) | Vietinio MCP serverio diegimas, VS Code konfigūracija, įrankiai, resursai, apribojimai ir trikčių diagnostika. |
-| [UZDUOTIS.md](UZDUOTIS.md) | Tyrimo užduoties šablonas: klausimas, objektas, kontekstas, apribojimai ir baigties kriterijus. |
-| [VAIDMENYS.md](VAIDMENYS.md) | Trijų specialistų vaidmenų instrukcijos: architektūros, kodo kokybės ir technologijų tyrimai. |
-| [.github/copilot-instructions.md](.github/copilot-instructions.md) | Bendros repository Copilot instrukcijos: kalba, įrodymų taisyklės, read-only režimas ir delegavimas. |
-| [.github/agents/architecture.agent.md](.github/agents/architecture.agent.md) | Architektūros agento atsakomybės, darbo eiga ir atsakymo formatas. |
-| [.github/agents/code-quality.agent.md](.github/agents/code-quality.agent.md) | Kodo kokybės agento atsakomybės, patikros ir radinių formatas. |
-| [.github/agents/technology.agent.md](.github/agents/technology.agent.md) | Technologijų agento versijų, oficialių šaltinių ir alternatyvų vertinimo taisyklės. |
-| [.github/agents/coordinator.agent.md](.github/agents/coordinator.agent.md) | Koordinatoriaus darbo eiga, įrodymų patikra ir bendros ataskaitos formatas. |
+| [MCP_SERVER.md](MCP_SERVER.md) | Local MCP server setup, VS Code configuration and troubleshooting. |
+| [TASK.md](TASK.md) | Research task template. |
+| [ROLES.md](ROLES.md) | Specialist role instructions. |
+| `.github/copilot-instructions.md` | Shared Copilot instructions. |
+
+Install dependencies with `npm install`. The project requires Node.js `>=22`. Start the server with `npm start` or select it from the VS Code MCP tools list.

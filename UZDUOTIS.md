@@ -1,12 +1,21 @@
-# Tyrimo užduotis
+# Research task template
 
-Privaloma pateikti tik tyrimo klausimą ir tyrimo objektą. Kitus laukus galima praleisti.
+## Question
 
-- **Klausimas / tikslas:**
-- **Objektas:** saugyklos kelias, kodo fragmentas, technologija arba dokumentacijos nuoroda.
-- **Kontekstas:** kam reikalingos išvados ir kokį sprendimą jos padės priimti.
-- **Svarbiausios sritys:**
-- **Apribojimai:** laikas, konkrečios versijos, neliečiamos sritys ar vykdymo apribojimai.
-- **Baigties kriterijus:** ką turi paaiškinti ar patvirtinti ataskaita.
+What must be investigated?
 
-Numatytasis režimas: analizė, kodo nekeičiant. Ataskaitos kalba – lietuvių, jei vartotojas nenurodo kitaip.
+## Subject
+
+Repository path, code area, technology or system under review.
+
+## Context
+
+Relevant versions, deployment context, observed behavior and available evidence.
+
+## Constraints
+
+Read-only limits, allowed tools, time boundaries and out-of-scope areas.
+
+## Completion criteria
+
+What evidence and answer format will be sufficient to close the task?
